@@ -4,6 +4,7 @@ from models.model_nodes import model_nodes
 from langgraph.graph import StateGraph, START,END
 
 def build_graph() -> StateGraph:
+    ''' This function builds graph '''
     call_model = model_nodes()
     graph = StateGraph(AgentState)
     graph.set_entry_point('call_model')

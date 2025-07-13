@@ -1,3 +1,4 @@
+from langchain_core.messages import ToolMessage
 from utils.dicts import ShellRunnerInput, ShellRunnerOutput, AgentState
 import tempfile
 import os
@@ -35,3 +36,12 @@ def prepare_shell_code(state:AgentState) -> ShellRunnerInput:
     last = last.split('```bash')[-1].split('```')[0]
     shell_code = ShellRunnerInput(code=last)
     return shell_code
+
+def prepare_tool_prompt(state: AgentState, output: ShellRunnerOutput) -> AgentState:
+    content = (
+        f"stdout:\n{output['stdout']}\n"
+        f"stderr:\n{output['stderr']}\n"
+        f"exit_code: {output['exit_code']}"
+    )
+    state['messages'].append(ToolMessage(content=content))
+    return state
