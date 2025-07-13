@@ -9,9 +9,16 @@ class model_nodes:
         self.model = self.build_model(MODEL_NAME)
     def call_model(self, state: AgentState) -> AgentState:
         ''' A node to call model '''
-        system_message = SystemMessage(content=SYSTEM_PROMPT)
-        response = self.model.invoke([system_message]+state['messages'])
-        state['messages'].append(response)
+        if len(state['messages']) == 1:
+            system_message = SystemMessage(content=SYSTEM_PROMPT)
+            state['messages'] = [system_message] + state['messages'] 
+        stream = self.model.stream(state['messages'])
+        response_content = ""
+        for chunk in stream:
+            response_content += chunk
+            print(chunk, end='', flush=True) 
+        print('\n')
+        state['messages'].append(AIMessage(content = response_content))
         return state
     @staticmethod
     def build_model(model_name: str):
