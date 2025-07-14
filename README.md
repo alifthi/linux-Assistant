@@ -28,7 +28,6 @@ An AI-powered assistant that lets you interact with your Linux system using natu
    ```bash
    git clone https://github.com/alifthi/linux-Assistant.git
    cd linux-Assistant
-   git checkout interact_with_terminal
    ```
 
 2. **Set up a virtual environment**  
