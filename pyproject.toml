@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "linux-assistant"
+version = "0.1.0"
+description = "An AI‑powered natural‑language Linux assistant"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Ali Fathi Jahromi", email = "alifathijahromi@gmail.com" }]
+dependencies = ["ollama", "langchain", "click"] 
+
+[project.scripts]
+linux_assistant = "linux_assistant.__main__:main"
