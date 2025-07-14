@@ -57,7 +57,8 @@ Open **`models/config.py`** and adjust:
 Run the assistant and start chatting:
 
 ```bash
-python main.py
+cd src
+python -m linux_assistant
 ```
 
 - Ask anything you would normally do in the terminal.

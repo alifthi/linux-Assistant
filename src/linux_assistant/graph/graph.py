@@ -1,7 +1,7 @@
-from graph.nodes import shell_node, prepare_shell_code,\
+from linux_assistant.graph.nodes import shell_node, prepare_shell_code,\
                         wants_shell, prepare_tool_prompt
-from utils.dicts import AgentState
-from models.model_nodes import model_nodes
+from linux_assistant.utils.dicts import AgentState
+from linux_assistant.models.model_nodes import model_nodes
 from langgraph.graph import StateGraph, START,END
 
 def build_graph() -> StateGraph:

@@ -1,5 +1,5 @@
 from langchain_core.messages import ToolMessage
-from utils.dicts import AgentState
+from linux_assistant.utils.dicts import AgentState
 import tempfile
 import os
 import subprocess

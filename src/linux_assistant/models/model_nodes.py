@@ -1,7 +1,7 @@
 from langchain_ollama import OllamaLLM
-from models.config import MODEL_NAME, SYSTEM_PROMPT
+from linux_assistant.models.config import MODEL_NAME, SYSTEM_PROMPT
 from langchain_core.messages import SystemMessage, AIMessage
-from utils.dicts import AgentState
+from linux_assistant.utils.dicts import AgentState
 
 
 class model_nodes:
