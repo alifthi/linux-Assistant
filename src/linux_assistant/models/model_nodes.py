@@ -2,6 +2,7 @@ from langchain_ollama import OllamaLLM
 from linux_assistant.models.config import MODEL_NAME, SYSTEM_PROMPT
 from langchain_core.messages import SystemMessage, AIMessage
 from linux_assistant.utils.dicts import AgentState
+import os
 
 
 class model_nodes:
@@ -23,4 +24,6 @@ class model_nodes:
     @staticmethod
     def build_model(model_name: str):
         ''' A function to define the LM '''
-        return  OllamaLLM(model = model_name)
+        ollama_host = os.environ.get('OLLAMA_HOST', 'http://localhost:11434')
+        print(f"Connecting to Ollama at: {ollama_host}")
+        return OllamaLLM(model=model_name, base_url=ollama_host)

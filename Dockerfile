@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 ENV PYTHONPATH=/app
-ENV OLLAMA_HOST=http://host.docker.internal:11434
+ENV OLLAMA_HOST=http://localhost:11434
 
 RUN echo '#!/bin/bash\ncd /app/src && python -m linux_assistant' > /app/entrypoint.sh && \
     chmod +x /app/entrypoint.sh

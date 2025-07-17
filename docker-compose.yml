@@ -7,9 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: linux-assistant
     environment:
-      - OLLAMA_HOST=http://host.docker.internal:11434
+      - OLLAMA_HOST=http://localhost:11434
     network_mode: "host"
     stdin_open: true
     tty: true
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
