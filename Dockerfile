@@ -10,7 +10,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
-
+RUN ollama pull qwen3:8b
 COPY . .
 
 ENV PYTHONPATH=/app

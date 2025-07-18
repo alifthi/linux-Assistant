@@ -65,6 +65,16 @@ python -m linux_assistant
 
 - Continue the conversation naturally or type `exit` to quit.
 
+### Docker Usage
+
+You can also run linux-Assistant using Docker:
+
+```bash
+docker run -it --network host alifthi/linux-assistant
+```
+
+This command runs the assistant in an interactive container with host network access, allowing you to interact with it directly.
+
 ---
 
 ## Contributing
