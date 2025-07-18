@@ -3,9 +3,13 @@ from linux_assistant.utils.dicts import AgentState
 import tempfile
 import os
 import subprocess
+import time
 
 def shell_node( state: AgentState)->  AgentState:
     '''To run a shell code that generated with AI'''
+    state['logger'].print_text("🔧 Running Tool...", color='blue', end='\n')
+    print("\n")
+    t = time.perf_counter()
     with tempfile.NamedTemporaryFile("w", suffix=".sh", delete=False) as tf:
         tf.write(state['code'])
         path = tf.name
@@ -13,13 +17,15 @@ def shell_node( state: AgentState)->  AgentState:
     proc = subprocess.run(
         ["bash", path],
         capture_output=True,
-        text=True,
-        timeout=30  
-        )
-
+        text=True)
+    interval = time.perf_counter() - t
     os.remove(path)
     state['stdout'], state['stderr'], state['exit_code'] = proc.stdout, proc.stderr, proc.returncode
-    state['code']
+    if state['exit_code'] == 0:
+        state['logger'].print_text(f"✔️ Completed in {interval}s", color='green')
+    else:
+        state['logger'].print_text("❌ Exited with error...", color='red')
+    print('\n')
     return state
 
 def wants_shell(state: AgentState) -> AgentState:

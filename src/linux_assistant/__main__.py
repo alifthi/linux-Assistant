@@ -6,8 +6,8 @@ from linux_assistant.utils.console_utils import console_utils
 def main():
   
   app = build_graph()
-  state: AgentState = {"messages": []}
   console = console_utils()
+  state: AgentState = {"messages": [], 'logger': console}
   console.release_banner()
   while True:  
     input_text = console.get_user_input()

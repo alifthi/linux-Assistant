@@ -18,7 +18,10 @@ class console_utils:
         self.console.print(self.intro_md)
     
     def get_user_input(self):
-        cmd = questionary.text(">",style=self.custom_style,qmark="").ask()
+        cmd = questionary.text("➜",style=self.custom_style,qmark="").ask()
         if cmd == None:
             raise SystemExit
-        return cmd        
+        return cmd  
+    
+    def print_text(self, text, color, end = ''):
+        self.console.print(f"[{color}]{text}", end=end)

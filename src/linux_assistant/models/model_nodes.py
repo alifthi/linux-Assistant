@@ -13,6 +13,7 @@ class model_nodes:
             system_message = SystemMessage(content=SYSTEM_PROMPT)
             state['messages'] = [system_message] + state['messages'] 
         stream = self.model.stream(state['messages'])
+        is_think_generated = False
         with Progress(
             SpinnerColumn(),
             TextColumn("[progress.description]{task.description}"),
@@ -24,10 +25,21 @@ class model_nodes:
                 if SHOW_THINKS:
                     prog.update(task, description=response_content, end = '', flush = True)
                 if chunk == '</think>':
+                    is_think_generated = True
                     break
-        for chunk in stream:
+        tmp = True
+        dont_show = False
+        for chunk in stream:                
             response_content += chunk
-            print(chunk, end='', flush=True) 
+            if (is_think_generated and chunk == 'shell') or dont_show:
+                dont_show = True
+                continue
+            if tmp:
+                if chunk == '\n\n': 
+                    continue
+                tmp = False
+                state['logger'].print_text(' ➜ ', color = 'yellow')
+            state['logger'].print_text(chunk, color='white') 
         print('\n')
         state['messages'].append(AIMessage(content = response_content))
         return state
