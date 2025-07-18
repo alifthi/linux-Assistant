@@ -19,4 +19,6 @@ class console_utils:
     
     def get_user_input(self):
         cmd = questionary.text(">",style=self.custom_style,qmark="").ask()
+        if cmd == None:
+            raise SystemExit
         return cmd        
