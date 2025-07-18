@@ -9,3 +9,4 @@ SYSTEM_PROMPT = ("You are an AI assistant to help user to do the tasks that user
                 "If it's not possible to run another code you mut tell user that it's not possible and why.",
                 "If user didn't ask for doing anything with there linux OS only chat normally.")
 MODEL_NAME = 'qwen3:8b'
+SHOW_THINKS = False
