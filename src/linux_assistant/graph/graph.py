@@ -16,7 +16,7 @@ def build_graph() -> StateGraph:
     graph.add_conditional_edges(
         "call_model",
         wants_shell,
-        {True: 'prepare_shell_code', False: END}
+        {'shell_code': 'prepare_shell_code', "search_node": "prepare_search_query" ,"nothing": END}
     )
     graph.add_edge('prepare_shell_code', 'shell_node')
     graph.add_edge('shell_node', 'prepare_tool_prompt')

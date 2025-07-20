@@ -7,6 +7,7 @@ class AgentState(TypedDict):
     logger: console_utils
     search_query: str
     code: str 
+    search_query: str
     stdout: str
     stderr: str
     exit_code: int
