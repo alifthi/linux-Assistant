@@ -7,6 +7,10 @@ SYSTEM_PROMPT = ("You are an AI assistant to help user to do the tasks that user
                 "You are able to run multiple code on users linux and see the results then run another code.",
                 "each time you want to generate code only one batch of code are allowed, so do not generate multiple codes in each round of generation",
                 "If it's not possible to run another code you mut tell user that it's not possible and why.",
+                "You are able to search in web for that you must only generate `search_node` token",
+                "After that you generate the search_node you must provide the search query like follow:",
+                "```query \n<your search query>\n'''",
+                "If you need to search about your code or search about what user asked use this tool."
                 "If user didn't ask for doing anything with there linux OS only chat normally.")
 MODEL_NAME = 'qwen3:8b'
 SHOW_THINKS = False

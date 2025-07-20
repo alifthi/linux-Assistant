@@ -31,7 +31,7 @@ class model_nodes:
         dont_show = False
         for chunk in stream:                
             response_content += chunk
-            if (is_think_generated and chunk == 'shell') or dont_show:
+            if (is_think_generated and (chunk == 'shell' or chunk == 'search')) or dont_show:
                 dont_show = True
                 continue
             if tmp:
