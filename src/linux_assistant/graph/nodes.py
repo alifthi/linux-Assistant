@@ -1,5 +1,7 @@
+from linux_assistant.graph.config import MAX_SEARCH_RESULTS
 from langchain_core.messages import ToolMessage
 from linux_assistant.utils.dicts import AgentState
+from langchain_community.tools import DuckDuckGoSearchRun
 import tempfile
 import os
 import subprocess
@@ -49,4 +51,12 @@ def prepare_tool_prompt( state: AgentState) -> AgentState:
         f"exit_code: {state['exit_code']}"
     )
     state['messages'].append(ToolMessage(content=content, tool_call_id="shell-1"))
+    return state
+
+def search_node(state: AgentState)-> AgentState:
+    '''A node for search'''
+    search_tool = DuckDuckGoSearchRun(output_format="list", max_results = MAX_SEARCH_RESULTS)
+    results = search_tool.invoke(state['search_query'])
+    for i, res in enumerate(results):
+        state['messages'].append(ToolMessage(content=res, tool_call_id = f'search_result_{i}'))
     return state
