@@ -31,7 +31,7 @@ def shell_node( state: AgentState)->  AgentState:
     return state
 
 def tool_select(state: AgentState) -> AgentState:
-    ''' To decide if shell needed '''
+    ''' To decide witch tool is needed '''
     last = state["messages"][-1].content.split('</think>')[-1]
     if "shell_node" in last:
         return "shell_node"

@@ -1,5 +1,5 @@
 from linux_assistant.graph.nodes import shell_node, prepare_shell_code,\
-                        wants_shell, prepare_tool_prompt
+                        tool_select, prepare_tool_prompt, prepare_search_query
 from linux_assistant.utils.dicts import AgentState
 from linux_assistant.models.model_nodes import model_nodes
 from langgraph.graph import StateGraph, START,END
@@ -15,9 +15,11 @@ def build_graph() -> StateGraph:
     graph.add_node('shell_node', shell_node)
     graph.add_conditional_edges(
         "call_model",
-        wants_shell,
+        tool_select,
         {'shell_code': 'prepare_shell_code', "search_node": "prepare_search_query" ,"nothing": END}
     )
+    graph.add_node('prepare_search_query', prepare_search_query)
+    graph.add_edge('prepare_search_query', 'call_model')
     graph.add_edge('prepare_shell_code', 'shell_node')
     graph.add_edge('shell_node', 'prepare_tool_prompt')
     graph.add_edge('prepare_tool_prompt','call_model')
