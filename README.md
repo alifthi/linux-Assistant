@@ -16,7 +16,7 @@ An AI-powered assistant that lets you interact with your Linux system using natu
 ## Prerequisites
 
 - **Linux** with Bash installed  
-- **Python 3.8+**  
+- **Python 3.12+**  
 - [Ollama CLI & daemon](https://ollama.com/) with at least one local model (e.g. `qwen3:8b`)  
 - (Optional but recommended) A dedicated Python virtual environment
 
