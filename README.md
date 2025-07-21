@@ -35,11 +35,13 @@ An AI-powered assistant that lets you interact with your Linux system using natu
    python3 -m venv .venv
    source .venv/bin/activate
    ```
-
-3. **Install dependencies**  
+3. **Install ollama and pull model**
+   ```bash 
+   curl -fsSL https://ollama.com/install.sh | sh
+   ollama pull qwen3:8B  # Or any other models you want to use
+   ```
+4. **Install dependencies**  
    ```bash
-   sudo apt install ollama
-   ollama pull qwen3:8B # Or any other models you want to use.
    pip install -r requirements.txt
    ```
 
