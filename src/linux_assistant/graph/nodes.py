@@ -1,7 +1,8 @@
-from linux_assistant.graph.config import MAX_SEARCH_RESULTS, WIKIPEDIA_RESULTS
-from langchain_core.messages import ToolMessage
+from linux_assistant.graph.config import MAX_SEARCH_RESULTS, WIKIPEDIA_RESULTS, SHOW_CODE_OUTPUT
 from linux_assistant.utils.dicts import AgentState
+from linux_assistant.utils.subprocess import processor
 from rich.progress import Progress, SpinnerColumn, TextColumn
+from langchain_core.messages import ToolMessage
 from langchain_community.tools.wikipedia.tool import WikipediaQueryRun
 from langchain_community.utilities.wikipedia import WikipediaAPIWrapper
 from ddgs import DDGS
@@ -19,19 +20,15 @@ def shell_node( state: AgentState)->  AgentState:
     state['logger'].print_text("🔧 Running shell command ...", color='blue', end='\n')
     print("\n")
     t = time.perf_counter()
-    with tempfile.NamedTemporaryFile("w", suffix=".sh", delete=False) as tf:
-        tf.write(state['code'])
-        path = tf.name
+
+    proc = processor(show_output=SHOW_CODE_OUTPUT)
+    proc.sucprocess(state['code'])
     
-    proc = subprocess.run(
-        ["bash", path],
-        capture_output=True,
-        text=True)
     interval = time.perf_counter() - t
-    os.remove(path)
-    state['stdout'], state['stderr'], state['exit_code'] = proc.stdout, proc.stderr, proc.returncode
+    
+    state['stdout'], state['stderr'], state['exit_code'] = proc.output['stdout'], proc.output['stderr'], proc.output['returncode']
     if state['exit_code'] == 0:
-        state['logger'].print_text(f"✔️ Completed in {interval}s", color='green')
+        state['logger'].print_text(f"✔️ Completed in {interval:.3f}s", color='green')
     else:
         state['logger'].print_text("❌ Exited with error...", color='red')
     print('\n')
