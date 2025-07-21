@@ -8,14 +8,15 @@ class processor:
         self.output = {'stderr':None, "stdout":None, "returncode":None}
         self.show_output = show_output
 
-    def sucprocess(self, code):
+    def subprocess(self, code):
+        '''Runing subprocess'''
         path = self.create_tmp_file(code)
         returncode, stdout, stderr = self.run_interactive_subprocess(['bash', path])
         os.remove(path)
         self.output = {'stderr':stderr, "stdout":stdout, "returncode":returncode}
         
     def run_interactive_subprocess(self, command):
-
+        '''To run shell intractivly'''
         stdout_buffer = io.StringIO()
         stderr_buffer = io.StringIO()
         
@@ -62,6 +63,7 @@ class processor:
         
     @staticmethod
     def create_tmp_file(code):
+        '''Creating a temp file'''
         with tempfile.NamedTemporaryFile("w", suffix=".sh", delete=False) as tf:
             tf.write(code)
             path = tf.name
@@ -69,10 +71,11 @@ class processor:
         
     @staticmethod
     def read_output(stream, prefix, buffer, show_output=True):
-            while True:
-                line = stream.readline()
-                if not line:
-                    break
-                if show_output:
-                    print(f"{prefix}: {line.strip()}")
-                buffer.write(line)
+        '''To gather outputs'''
+        while True:
+            line = stream.readline()
+            if not line:
+                break
+            if show_output:
+                print(f"{prefix}: {line.strip()}")
+            buffer.write(line)

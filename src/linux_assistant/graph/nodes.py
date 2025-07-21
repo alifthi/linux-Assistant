@@ -6,13 +6,9 @@ from langchain_core.messages import ToolMessage
 from langchain_community.tools.wikipedia.tool import WikipediaQueryRun
 from langchain_community.utilities.wikipedia import WikipediaAPIWrapper
 from ddgs import DDGS
-import tempfile
-import os
-import subprocess
 import time
 import gc
-import warnings
-warnings.filterwarnings("ignore", message="This package .* has been renamed to `ddgs`!", category=RuntimeWarning)
+
 
 
 def shell_node( state: AgentState)->  AgentState:
@@ -22,7 +18,7 @@ def shell_node( state: AgentState)->  AgentState:
     t = time.perf_counter()
 
     proc = processor(show_output=SHOW_CODE_OUTPUT)
-    proc.sucprocess(state['code'])
+    proc.subprocess(state['code'])
     
     interval = time.perf_counter() - t
     
