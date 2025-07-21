@@ -29,7 +29,7 @@ class model_nodes:
                     break
         tmp = True
         dont_show = False
-        for chunk in stream:                
+        for chunk in stream:     
             response_content += chunk
             if (is_think_generated and (chunk == 'shell' or chunk == 'search')) or dont_show:
                 dont_show = True
