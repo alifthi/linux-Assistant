@@ -38,6 +38,8 @@ An AI-powered assistant that lets you interact with your Linux system using natu
 
 3. **Install dependencies**  
    ```bash
+   sudo apt install ollama
+   ollama pull qwen3:8B # Or any other models you want to use.
    pip install -r requirements.txt
    ```
 
