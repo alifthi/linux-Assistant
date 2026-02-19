@@ -68,6 +68,15 @@ python -m linux_assistant
 - Ask anything you would normally do in the terminal.
 
 - Continue the conversation naturally or type `exit` to quit.
+---
+Run the assistant using Docker
+
+```bash
+docker run --name <Container's name> \
+   -v linux_assistant_volume:/app/data \
+   -v "$(pwd)":/app/workspace alifthi/linux-assistant 
+
+```
 
 ---
 
