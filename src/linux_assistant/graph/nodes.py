@@ -51,11 +51,12 @@ def prepare_shell_code(state:AgentState) -> AgentState:
 def prepare_tool_prompt( state: AgentState) -> AgentState:
     '''Prepare the output of executed command for LM'''
     content = (
+        "Here is the output of command you generated:\n"
         f"stdout:\n{state['stdout']}\n"
         f"stderr:\n{state['stderr']}\n"
         f"exit_code: {state['exit_code']}"
     )
-    state['messages'].append({'role':'system', 'content': content})
+    state['messages'].append({'role':'user', 'content': content})
 
     return state
 def prepare_search_query(state: AgentState) -> AgentState:
@@ -98,7 +99,7 @@ class search_tools:
             wiki_search_res = self.search_in_wiki(state['search_query'])
             ddg_res = self.search_duckduckgo(state['search_query'])
             interval = time.perf_counter() - t
-        state['messages'].append({'role':'system', 'content': wiki_search_res})
+        state['messages'].append({'role':'user', 'content': wiki_search_res})
         for i, res in enumerate(ddg_res):
             state['messages'].append(ToolMessage(content=res['body'], tool_call_id = f'search_result_{i+1}'))
         if len(ddg_res) == 0:
