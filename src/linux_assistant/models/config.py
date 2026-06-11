@@ -14,5 +14,7 @@ SYSTEM_PROMPT = ("You are an AI assistant to help user to do the tasks that user
                 "```query \n<your search query>\n'''",
                 "If you need to search about your code or search about what user asked use this tool."
                 "If user didn't ask for doing anything with there linux OS only chat normally.")
-MODEL_NAME = 'qwen3:8b'
+GENERATION_MODEL='Qwen3.5-4B-Q6_K.gguf'
+REPO_ID = "unsloth/Qwen3.5-4B-GGUF"
+
 SHOW_THINKS = False
