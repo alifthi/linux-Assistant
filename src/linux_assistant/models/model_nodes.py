@@ -2,7 +2,6 @@ from llama_cpp import Llama, LlamaRAMCache
 from huggingface_hub import hf_hub_download
 from linux_assistant.models.config import SYSTEM_PROMPT, SHOW_THINKS,\
                                         REPO_ID, GENERATION_MODEL
-from langchain_core.messages import SystemMessage, AIMessage
 from linux_assistant.utils.dicts import AgentState
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
@@ -14,8 +13,9 @@ class model_nodes:
     def call_model(self, state: AgentState) -> AgentState:
         ''' A node to call model '''
         if len(state['messages']) == 1:
-            system_message = SystemMessage(content=SYSTEM_PROMPT)
-            state['messages'] = [system_message] + state['messages'] 
+            system_message = {'role':'system', 'content': SYSTEM_PROMPT} 
+            state['messages'] = [system_message] + state['messages']
+        
         stream = self.model.create_chat_completion(
                 messages=state['messages'],
                 temperature=0.7,
@@ -42,6 +42,7 @@ class model_nodes:
         tmp = True
         dont_show = False
         for chunk in stream:     
+            chunk = chunk["choices"][0]["delta"].get("content", "")
             response_content += chunk
             if (is_think_generated and (chunk == 'shell' or chunk == 'search')) or dont_show:
                 dont_show = True
@@ -53,7 +54,7 @@ class model_nodes:
                 state['logger'].print_text(' ➜ ', color = 'yellow')
             state['logger'].print_text(chunk, color='white') 
         print('\n')
-        state['messages'].append(AIMessage(content = response_content))
+        state['messages'].append({'role':'assistant', 'content': response_content})
         return state
     @staticmethod
     def build_model():
@@ -62,6 +63,7 @@ class model_nodes:
         return Llama(
             model_path=model_path,
             n_ctx=4096,                    
-            n_gpu_layers=-1,               
+            n_gpu_layers=10,               
             chat_format='qwen',
+            verbose=False,
         )

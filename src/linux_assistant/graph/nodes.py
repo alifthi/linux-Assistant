@@ -32,7 +32,7 @@ def shell_node( state: AgentState)->  AgentState:
 
 def tool_select(state: AgentState) -> AgentState:
     ''' To decide witch tool is needed '''
-    last = state["messages"][-1].content.split('</think>')[-1]
+    last = state["messages"][-1]['content'].split('</think>')[-1]
     if "shell_node" in last:
         return "shell_node"
     elif "search_node" in last:
@@ -42,7 +42,7 @@ def tool_select(state: AgentState) -> AgentState:
 
 def prepare_shell_code(state:AgentState) -> AgentState:
     ''' To extract generated code '''
-    last = state["messages"][-1].content
+    last = state["messages"][-1]['content']
     last = last.split('shell_node')[-1]
     last = last.split('```bash')[-1].split('```')[0]
     state['code'] = last
@@ -55,11 +55,12 @@ def prepare_tool_prompt( state: AgentState) -> AgentState:
         f"stderr:\n{state['stderr']}\n"
         f"exit_code: {state['exit_code']}"
     )
-    state['messages'].append(ToolMessage(content=content, tool_call_id="shell-1"))
+    state['messages'].append({'role':'system', 'content': content})
+
     return state
 def prepare_search_query(state: AgentState) -> AgentState:
     '''Prepare the query for giving to search_node'''
-    last = state["messages"][-1].content
+    last = state["messages"][-1]['content']
     last = last.split('search_node')[-1]
     last = last.split('```query')[-1].split('```')[0]
     state['search_query'] = last
@@ -97,7 +98,7 @@ class search_tools:
             wiki_search_res = self.search_in_wiki(state['search_query'])
             ddg_res = self.search_duckduckgo(state['search_query'])
             interval = time.perf_counter() - t
-        state['messages'].append(ToolMessage(content=wiki_search_res, tool_call_id = f'search_result_{0}'))
+        state['messages'].append({'role':'system', 'content': wiki_search_res})
         for i, res in enumerate(ddg_res):
             state['messages'].append(ToolMessage(content=res['body'], tool_call_id = f'search_result_{i+1}'))
         if len(ddg_res) == 0:

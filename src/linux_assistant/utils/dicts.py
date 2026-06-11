@@ -3,7 +3,7 @@ from linux_assistant.utils.console_utils import console_utils
 from langchain_core.messages import BaseMessage    
 
 class AgentState(TypedDict):
-    messages: Sequence[BaseMessage]
+    messages: Sequence[dict]
     logger: console_utils
     search_query: str
     code: str 
