@@ -1,22 +1,33 @@
-from linux_assistant.graph.graph import build_graph
-from linux_assistant.utils.dicts import AgentState
-from linux_assistant.utils.console_utils import console_utils
+
+import click
+
+
+@click.group(invoke_without_command=True)
+@click.pass_context
+def cli(ctx):
+    """Linux Assistant CLI"""
+    if ctx.invoked_subcommand is None:
+        ctx.invoke(run)
+
+
+@cli.command()
+def run():
+    from linux_assistant.runtime.checks import require_llama
+    require_llama()
+    
+    from linux_assistant.app import run_app
+    run_app()
+
+
+@cli.command()
+def setup():
+    from linux_assistant.setup import setup_cmd
+    setup_cmd()
+
 
 def main():
-  
-  app = build_graph()
-  console = console_utils()
-  state: AgentState = {"messages": [], 'logger': console}
-  console.release_banner()
-  while True:  
-    input_text = console.get_user_input()
-    state['messages'].append({'role':'user', 'content': input_text})
-    if input_text == 'exit':
-      break
-    state = app.invoke(state)
-    
-if __name__ == '__main__':
-  try:
+    cli()
+
+
+if __name__ == "__main__":
     main()
-  except KeyboardInterrupt:
-    pass

@@ -2,7 +2,6 @@ from linux_assistant.graph.config import MAX_SEARCH_RESULTS, WIKIPEDIA_RESULTS, 
 from linux_assistant.utils.dicts import AgentState
 from linux_assistant.utils.subprocess import processor
 from rich.progress import Progress, SpinnerColumn, TextColumn
-from langchain_core.messages import ToolMessage
 from langchain_community.tools.wikipedia.tool import WikipediaQueryRun
 from langchain_community.utilities.wikipedia import WikipediaAPIWrapper
 from ddgs import DDGS
@@ -101,7 +100,7 @@ class search_tools:
             interval = time.perf_counter() - t
         state['messages'].append({'role':'user', 'content': wiki_search_res})
         for i, res in enumerate(ddg_res):
-            state['messages'].append(ToolMessage(content=res['body'], tool_call_id = f'search_result_{i+1}'))
+            state['messages'].append({'role':'user', 'content': res['body']})
         if len(ddg_res) == 0:
             state['logger'].print_text("❌ No result found ", color='red')
         else:

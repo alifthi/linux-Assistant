@@ -9,7 +9,7 @@ description = "An AI‑powered natural‑language Linux assistant"
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [{ name = "Ali Fathi Jahromi", email = "alifathijahromi@gmail.com" }]
-dependencies = ["ollama", "langchain", "click"] 
+dependencies = [ "langchain", "click"] 
 
 [project.scripts]
-linux_assistant = "linux_assistant.__main__:main"
+linux-assistant = "linux_assistant.__main__:main"
