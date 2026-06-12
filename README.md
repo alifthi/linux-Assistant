@@ -9,41 +9,15 @@ An AI-powered assistant that lets you interact with your Linux system using natu
 - **Natural‑language interface**: Describe what you want to do—no need to remember exact commands.  
 - **Interactive shell execution**: The assistant decides when to run commands, executes them in a temporary script, and returns the output.  
 - **Continuous conversation**: You can follow up on results, ask for clarifications, or chain multiple operations in one session.  
-- **Customizable**: Swap in any Ollama‑compatible model and adjust prompts to suit your workflow.
+- **Customizable**: Swap in any llama.cpp model and adjust prompts to suit your workflow.
 
 ---
 
 ## Prerequisites
 
-- **Linux** with Bash installed  
-- **Python 3.12+**  
-- [Ollama CLI & daemon](https://ollama.com/) with at least one local model (e.g. `qwen3:8b`)  
+- **Linux**
+- **Python 3.12+**   
 - (Optional but recommended) A dedicated Python virtual environment
-
----
-
-## Installation
-
-1. **Clone the repository**  
-   ```bash
-   git clone https://github.com/alifthi/linux-Assistant.git
-   cd linux-Assistant
-   ```
-
-2. **Set up a virtual environment**  
-   ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate
-   ```
-3. **Install ollama and pull model**
-   ```bash 
-   curl -fsSL https://ollama.com/install.sh | sh
-   ollama pull qwen3:8B  # Or any other models you want to use
-   ```
-4. **Install dependencies**  
-   ```bash
-   pip install -r requirements.txt
-   ```
 
 ---
 
@@ -51,19 +25,36 @@ An AI-powered assistant that lets you interact with your Linux system using natu
 
 Open **`models/config.py`** and adjust:
 
-- `MODEL_NAME` – the Ollama model you wish to use (e.g. `"qwen3:8b"`).  
+- `GENERATION_MODEL` – the GGUF model you wish to use.
+- `REPO_ID` – The hf repository you want to model beeing download from.
 - `SYSTEM_PROMPT` – how the assistant should frame its replies and decide when to run shell commands.
 
 ---
+## Installation
 
+* Install via pip
+
+```bash
+$ pip install linux-assistant
+```
+
+* Build from source
+
+```bash
+$ git clone https://github.com/alifthi/linux-Assistant.git
+$ cd linux-Assistant
+$ pip install -e .
+```
+---
 ## Usage
 
 Run the assistant and start chatting:
 
 ```bash
-cd src
-python -m linux_assistant
+$ linux-assistant
 ```
+
+- If inference enginee is not installed, you need to run `linux-assistant setup` to install inference enginee.
 
 - Ask anything you would normally do in the terminal.
 
