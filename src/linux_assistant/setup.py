@@ -65,7 +65,13 @@ def install_llama_cpp(cuda=False):
             raise RuntimeError("Could not detect CUDA version. Ensure nvcc or nvidia-smi is available.")
         print(f"Detected CUDA version: {cuda_version}")
         subprocess.check_call(
-            [sys.executable, "-m", "pip", "install", "llama-cpp-python","--extra-index-url",f"https://abetlen.github.io/llama-cpp-python/whl/{cuda_version}"],
+            [sys.executable, 
+             "-m",
+             "pip",
+             "install",
+             "--only-binary=:all:",
+             "llama-cpp-python",
+             "--extra-index-url",f"https://abetlen.github.io/llama-cpp-python/whl/{cuda_version}"],
             env=env
         )
     else:
@@ -75,6 +81,7 @@ def install_llama_cpp(cuda=False):
             "-m",
             "pip",
             "install",
+            "--only-binary=:all:",
             "llama-cpp-python",
             "--extra-index-url",
             "https://abetlen.github.io/llama-cpp-python/whl/cpu"
