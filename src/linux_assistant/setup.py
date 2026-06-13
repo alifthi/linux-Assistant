@@ -16,15 +16,56 @@ def detect_cuda():
         return False
 
 
+def detect_cuda_version():
+    try:
+        result = subprocess.run(
+            ["nvcc", "--version"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        if result.returncode == 0:
+            for line in result.stdout.splitlines():
+                if "release" in line:
+                    import re
+                    match = re.search(r"release (\d+)\.(\d+)", line)
+                    if match:
+                        major, minor = match.group(1), match.group(2)
+                        return f"cu{major}{minor}"
+    except FileNotFoundError:
+        print("nvcc not found, trying nvidia-smi for CUDA version...")
+
+    try:
+        result = subprocess.run(
+            ["nvidia-smi"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        if result.returncode == 0:
+            import re
+            match = re.search(r"CUDA Version: (\d+)\.(\d+)", result.stdout)
+            if match:
+                major, minor = match.group(1), match.group(2)
+                return f"cu{major}{minor}"
+    except FileNotFoundError:
+        print("nvidia-smi not found, unable to detect CUDA version.")
+
+    return None
+
+
 def install_llama_cpp(cuda=False):
     subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
     if cuda:
         print("Installing CUDA version of llama-cpp-python...")
         import os
         env = os.environ.copy()
-        env["CMAKE_ARGS"] = "-DGGML_CUDA=on"
+        cuda_version = detect_cuda_version()
+        if cuda_version is None:
+            raise RuntimeError("Could not detect CUDA version. Ensure nvcc or nvidia-smi is available.")
+        print(f"Detected CUDA version: {cuda_version}")
         subprocess.check_call(
-            [sys.executable, "-m", "pip", "install", "llama-cpp-python"],
+            [sys.executable, "-m", "pip", "install", "llama-cpp-python","--extra-index-url",f"https://abetlen.github.io/llama-cpp-python/whl/{cuda_version}"],
             env=env
         )
     else:
@@ -34,7 +75,9 @@ def install_llama_cpp(cuda=False):
             "-m",
             "pip",
             "install",
-            "llama-cpp-python"
+            "llama-cpp-python",
+            "--extra-index-url",
+            "https://abetlen.github.io/llama-cpp-python/whl/cpu"
         ])
 
 
