@@ -4,12 +4,19 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "linux-assistant"
-version = "0.1.0"
-description = "An AI‑powered natural‑language Linux assistant"
+version = "0.1.2"
+description = "An AI-powered natural-language Linux assistant"
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [{ name = "Ali Fathi Jahromi", email = "alifathijahromi@gmail.com" }]
-dependencies = [ "langchain", "click"] 
+requires-python = ">=3.12"
+dependencies = ["langchain", "click"]
 
 [project.scripts]
 linux-assistant = "linux_assistant.__main__:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

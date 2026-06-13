@@ -17,17 +17,16 @@ def detect_cuda():
 
 
 def install_llama_cpp(cuda=False):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"])
     if cuda:
         print("Installing CUDA version of llama-cpp-python...")
-        subprocess.check_call([
-            sys.executable,
-            "-m",
-            "pip",
-            "install",
-            "llama-cpp-python",
-            "--extra-index-url",
-            "https://abetlen.github.io/llama-cpp-python/whl/cu124"
-        ])
+        import os
+        env = os.environ.copy()
+        env["CMAKE_ARGS"] = "-DGGML_CUDA=on"
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", "llama-cpp-python"],
+            env=env
+        )
     else:
         print("Installing CPU version of llama-cpp-python...")
         subprocess.check_call([
